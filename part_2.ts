@@ -18,8 +18,8 @@ test.describe('Wooxy Update Contact Data API Endpoint', () => {
         const contactId = '12345'; // Example targeted contact ID
         const payload = {
             email: 'candidate-test@example.com',
-            first_name: 'John',
-            last_name: 'Doe',
+            first_name: 'Faker',
+            last_name: '',
             custom_fields: {
                 company: 'Quality Assurance Corp',
                 status: 'Active'
