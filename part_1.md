@@ -41,8 +41,8 @@ This document describes the comprehensive test plan for the wooxy.com platform r
 3. Enter strong password (min 8 chars, mixed case, numbers)
 4. Accept Terms of Service
 5. Click "Sign Up" button |
-| **Test Data** | Email: test_candidate@example.com
-Password: SecurePass123! |
+| **Test Data** | Email: sasafimushkin@gmail.com
+Password: Securepass12! |
 | **Expected Result** | Account is created successfully
 User is redirected to Account Setup step
 Verification email is sent to provided email
@@ -64,8 +64,9 @@ Success message is displayed |
 3. Enter valid password
 4. Accept Terms of Service
 5. Click "Sign Up" button |
-| **Test Data** | Email: existing_user@example.com (known to exist)
-Password: SecurePass123! |
+| **Test Data** | Email: sasafimushkin@gmail.com
+ (known to exist)
+Password: Securepass12! |
 | **Expected Result** | System displays error message: "Email already registered"
 Form submission is prevented
 User remains on registration page
@@ -86,8 +87,9 @@ Suggestion to login or reset password is shown |
 2. Enter invalid email format (e.g., notanemail) and submit
 3. Enter weak password (less than 8 characters) and submit
 4. Submit without accepting Terms of Service |
-| **Test Data** | Invalid Email: invalid.email
-Weak Password: Pass123 |
+| **Test Data** | Invalid Email: sasafimushkingmail.com
+
+Weak Password: Pass3 |
 | **Expected Result** | Inline validation errors appear for each field
 Form submission is blocked
 Error messages are clear and actionable
@@ -113,9 +115,9 @@ User can correct errors and retry |
 5. Select country/region
 6. Click "Continue" button |
 | **Test Data** | Company: Wooxy Tech
-Full Name: John Doe
-Job Title: QA Engineer
-Country: United States |
+Full Name: name faker 
+Job Title: general QA
+Country: Ukraine|
 | **Expected Result** | Form data is saved successfully
 No validation errors appear
 User is redirected to Verification step
@@ -135,7 +137,7 @@ Progress indicator updates |
 | **Steps to Reproduce** | 1. Fill only mandatory fields (name, email)
 2. Leave optional fields blank (phone, company size)
 3. Click "Continue" button |
-| **Test Data** | Name: Jane Smith
+| **Test Data** | Name: name faker
 Optional Fields: Left empty |
 | **Expected Result** | Form accepts submission without errors
 User progresses to next step
