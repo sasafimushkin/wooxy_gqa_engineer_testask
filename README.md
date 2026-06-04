@@ -6,6 +6,8 @@ Thank you for your interest in the General QA Engineer position at Wooxy. As par
 
 ---
 
+---
+
 ## Part 1
 
 We'd like to see your approach to solving this problem. It is up to you to choose the test plan and how to implement it.

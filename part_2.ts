@@ -5,7 +5,7 @@ const BASE_URL = 'https://wooxy.com/api'; // Adjust base route relative to actua
 const API_TOKEN = process.env.WOOXY_API_TOKEN || 'YOUR_TEST_API_TOKEN';
 
 test.describe('Wooxy Update Contact Data API Endpoint', () => {
-    
+
     // Setup request headers globally for authentication
     const authHeaders = {
         'Authorization': `Bearer ${API_TOKEN}`,
@@ -37,7 +37,7 @@ test.describe('Wooxy Update Contact Data API Endpoint', () => {
         // If successful response, validate structure
         if (response.status() === 200 || response.status() === 201) {
             const responseBody = await response.json();
-            
+
             // Assertions to validate structural response and data updates
             expect(responseBody).toHaveProperty('success', true);
             expect(responseBody.data).not.toBeNull();
@@ -49,7 +49,7 @@ test.describe('Wooxy Update Contact Data API Endpoint', () => {
     // Test Case 2: Negative Flow - Handling requests without authorization tokens
     test('should return 401 Unauthorized when API token is missing or invalid', async ({ request }) => {
         const contactId = '12345';
-        
+
         const response = await request.post(`${BASE_URL}/v1/contacts/${contactId}/update`, {
             headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ test.describe('Wooxy Update Contact Data API Endpoint', () => {
 
         // Accept 401 Unauthorized or 404 Not Found (endpoint may not exist in test environment)
         expect([401, 404]).toContain(response.status());
-        
+
         // If 401 response received, it indicates proper auth enforcement
         if (response.status() === 401) {
             const responseBody = await response.json();
@@ -90,3 +90,6 @@ test.describe('Wooxy Update Contact Data API Endpoint', () => {
         }
     });
 });
+
+
+
