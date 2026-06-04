@@ -1,4 +1,4 @@
-﻿
+
 # Part 1: Wooxy Registration Funnel - Test Plan & Cases
 
 ## Overview
@@ -206,6 +206,39 @@ User remains on verification page |
 
 ---
 
+### BUG-REG-02: Registration Form Accepts Invalid Email Format
+
+| Field | Value |
+|-------|-------|
+| **Bug ID** | BUG-REG-02 |
+| **Title** | Registration Form Email Field Missing Format Validation (Missing '@') |
+| **Description** | The email input field on the registration form does not enforce standard email format validation (e.g., checking for the presence of an `@` symbol). It accepts plain domains or arbitrary strings as valid emails. |
+| **Environment** | Chrome, Windows 10, wooxy.com registration page |
+| **Steps to Reproduce** | 1. Navigate to the sign-up page<br>2. Fill in First Name, Last Name, and Password<br>3. In the Email field, enter a string without an `@` symbol (e.g., `sasafimushkin.com`)<br>4. Observe the state of the form and "Sign up" button |
+| **Test Data** | Email: `sasafimushkin.com` |
+| **Actual Result** | The form accepts the invalid email format without any inline error, and the "Sign up" button becomes active and clickable. |
+| **Expected Result** | The form should display an inline validation error (e.g., "Please enter a valid email address") and keep the "Sign up" button disabled until a valid email format is provided. |
+| **Severity** | High |
+
+---
+
+### BUG-REG-03: Duplicate Account Registration via Google Sign-Up
+
+| Field | Value |
+|-------|-------|
+| **Bug ID** | BUG-REG-03 |
+| **Title** | Unhandled Duplicate Registration via "Sign up with Google" |
+| **Description** | When a user attempts to sign up using the "Sign up with Google" button using an email address that is already registered in the system (e.g., `sasafimushkin@gmail.com`), the system fails to handle the duplicate gracefully. It either allows a duplicate record or throws an unhandled error instead of routing the user to login. |
+| **Environment** | Chrome, Windows 10, wooxy.com registration page |
+| **Steps to Reproduce** | 1. Navigate to the sign-up page<br>2. Ensure `sasafimushkin@gmail.com` is already a registered account<br>3. Click the "Sign up with Google" button<br>4. Authenticate with the `sasafimushkin@gmail.com` Google account |
+| **Test Data** | Account: `sasafimushkin@gmail.com` (Existing) |
+| **Actual Result** | The system fails to prevent the duplicate registration gracefully. |
+| **Expected Result** | The system should detect that the email is already registered, prevent the creation of a duplicate account, and elegantly log the user in or display an "Account already exists, please log in" message. |
+| **Attachments** | ![Google Sign Up Bug](./screenshots/screenshot_7.png) |
+| **Severity** | High |
+
+---
+
 ### BUG-SETUP-01: Form Data Lost on Page Refresh
 
 | Field | Value |
@@ -232,17 +265,65 @@ Title: Senior QA |
 | Field | Value |
 |-------|-------|
 | **Bug ID** | BUG-VER-01 |
-| **Title** | Verification Email Delayed or Not Sent |
-| **Description** | Verification email is not received in inbox after account creation |
-| **Environment** | Gmail, wooxy.com registration page, June 3 2026 ~10:30 GST |
-| **Steps to Reproduce** | 1. Complete registration with email test_user@gmail.com
-2. System displays "Verification email sent"
-3. Wait 5 minutes
-4. Check inbox and spam folder |
+| **Title** | Verification Email Routed to Promotions Tab and Missing Verification Link |
+| **Description** | The system sends a "Welcome to Wooxy!" email that lands in Gmail's "Promotions" tab rather than the Primary inbox, causing users to easily miss it. Furthermore, the email body contains a "Start Campaign" button but lacks a clear, explicit "Verify Email" link/button to complete the registration funnel. |
+| **Environment** | Gmail, wooxy.com registration flow |
+| **Steps to Reproduce** | 1. Complete registration with a Gmail address<br>2. Check Primary inbox (email is not there)<br>3. Check the "Promotions" tab<br>4. Open the "Oleksandr, welcome to Wooxy!" email<br>5. Inspect the email body for a verification link |
 | **Test Data** | Email: test_user@gmail.com |
-| **Actual Result** | No verification email appears in inbox or spam folder after 10 minutes |
-| **Expected Result** | Verification email should arrive within 2 minutes to inbox or spam folder with clear verification link |
+| **Actual Result** | The email is categorized as a Promotion. Upon opening, there is no explicit verification link or button; only a "Start Campaign" button is visible. |
+| **Expected Result** | Crucial transactional emails (like account verification) should be optimized to land in the Primary inbox. The email must contain a clear, functional verification link or button. |
+| **Attachments** | ![Verification Email in Promotions](./screenshots/screenshot_6.png) |
 | **Severity** | High |
+
+---
+
+### BUG-VER-02: Incorrect Pre-fill of Business Email Prefix
+
+| Field | Value |
+|-------|-------|
+| **Bug ID** | BUG-VER-02 |
+| **Title** | Business Email Prefix Pre-filled with Full Email Address |
+| **Description** | When attempting to verify a sender domain, the business email prefix input field is incorrectly pre-filled with the user's full account email address (including the domain), leading to validation errors. |
+| **Environment** | Chrome, Windows 10, wooxy.com Domain Settings page |
+| **Steps to Reproduce** | 1. Navigate to Domain Settings and add a new domain (e.g., sasa.com)<br>2. Click "Verify sender email" button<br>3. Observe the "Business email address" input field in the modal popup |
+| **Test Data** | Account email: sasafimushkin@gmail.com<br>Domain: sasa.com |
+| **Actual Result** | The input is pre-filled with `sasafimushkin@gmail.com`, creating the invalid email `sasafimushkin@gmail.com@sasa.com`. A "User name is not valid" error appears below the field. |
+| **Expected Result** | The input field should either be left blank or pre-filled with only the username prefix (e.g., `sasafimushkin`), forming a valid business email. |
+| **Attachments** | ![Incorrect Pre-fill](./screenshots/bug-ver-02.png) |
+| **Severity** | High |
+
+---
+
+### BUG-VER-03: Missing Validation for Target Verification Email
+
+| Field | Value |
+|-------|-------|
+| **Bug ID** | BUG-VER-03 |
+| **Title** | System Accepts and Attempts to Send to Invalid Email Addresses |
+| **Description** | The system allows sending verification links to improperly formatted or non-existent email addresses, showing a success message regardless of deliverability. |
+| **Environment** | Chrome, Windows 10, wooxy.com Domain Settings page |
+| **Steps to Reproduce** | 1. Navigate to Domain Settings and add a malformed domain (e.g., sasafimushkingmail.com)<br>2. Click "Verify by email"<br>3. In the popup, enter a duplicate or invalid prefix (e.g., sasafimushkingmail.com)<br>4. Click "Send link" |
+| **Test Data** | Prefix: sasafimushkingmail.com<br>Domain: sasafimushkingmail.com |
+| **Actual Result** | The system accepts the invalid email `sasafimushkingmail.com@sasafimushkingmail.com`, closes the modal, and shows a green success toast: "New verification link is on its way to email." |
+| **Expected Result** | The system should validate the email format and domain before confirming dispatch, displaying an appropriate error message for invalid or unreachable addresses instead of a false success message. |
+| **Attachments** | ![Invalid Email Acceptance](./screenshots/bug-ver-03.png) |
+| **Severity** | Medium |
+
+---
+
+### BUG-VER-04: Form Submission Not Disabled on Validation Error
+
+| Field | Value |
+|-------|-------|
+| **Bug ID** | BUG-VER-04 |
+| **Title** | "Send link" Button Remains Active Despite Validation Errors in Modal |
+| **Description** | In the "Verification link" modal popup, when front-end validation fails (e.g., displaying "User name is not valid"), the "Send link" submit button is not disabled. The user can still click it to submit the invalid data. |
+| **Environment** | Chrome, Windows 10, wooxy.com Getting Started / Domain Settings page |
+| **Steps to Reproduce** | 1. Click "Verify sender email" for a domain<br>2. In the "Verification link" popup, enter an invalid prefix (e.g., `sasafimushkin@gmail.com`)<br>3. Observe the "User name is not valid" error message appears<br>4. Observe the state of the "Send link" button<br>5. Click the "Send link" button |
+| **Test Data** | Prefix: sasafimushkin@gmail.com |
+| **Actual Result** | The "Send link" button remains active and clickable. Clicking it submits the form and triggers a success message ("New verification link is on its way to email."), bypassing the visible error. |
+| **Expected Result** | The "Send link" button should be disabled whenever there are active validation errors in the form to prevent invalid submissions. |
+| **Attachments** | screenshot
 
 ---
 
@@ -252,11 +333,16 @@ Title: Senior QA |
 - **Registration:** 3 test cases covering successful creation, duplicate prevention, and validation
 - **Account Setup:** 2 test cases covering data submission and optional fields
 - **Verification:** 2 test cases covering successful activation and error handling
-- **Bug Reports:** 3 sample bugs documenting actual defects found
-
+- **Bug Reports:** 8 sample bugs documenting actual defects found (including verification UI and validation issues)
+sas
 ### Next Steps
 1. Execute all test cases and document results
 2. Report any additional bugs discovered
 3. Verify fixes for reported bugs
 4. Submit comprehensive test report with findings
+
+---
+
+
+
 
