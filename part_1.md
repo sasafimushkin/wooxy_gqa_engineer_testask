@@ -201,7 +201,7 @@ User remains on verification page |
 4. Observe field behavior |
 | **Test Data** | Input: MyPassword123! |
 | **Actual Result** | Password characters are visible as plain text: MyPassword123! |
-| **Expected Result** | Password characters should be masked as dots: вЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂў |
+| **Expected Result** | Password characters should be masked as dots: |
 | **Severity** | High |
 
 ---
@@ -291,6 +291,8 @@ Title: Senior QA |
 | **Expected Result** | The input field should either be left blank or pre-filled with only the username prefix (e.g., `sasafimushkin`), forming a valid business email. |
 | **Attachments** | ![Incorrect Pre-fill](./screenshots/bug-ver-02.png) |
 | **Severity** | High |
+
+
 
 ---
 
